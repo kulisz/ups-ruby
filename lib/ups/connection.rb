@@ -22,6 +22,7 @@ module UPS
     SHIP_ACCEPT_PATH = '/ups.app/xml/ShipAccept'
     ADDRESS_PATH = '/ups.app/xml/XAV'
     TRACK_PATH = '/ups.app/xml/Track'
+    LOCATOR_PATH = '/ups.app/xml/Locator'
 
     DEFAULT_PARAMS = {
       test_mode: false
@@ -35,6 +36,26 @@ module UPS
     def initialize(params = {})
       params = DEFAULT_PARAMS.merge(params)
       self.url = (params[:test_mode]) ? TEST_URL : LIVE_URL
+    end
+
+    # Makes a request to fetch Locations.
+    #
+    # A pre-configured {Builders::LocatorBuilder} object can be passed as the first
+    # option or a block yielded to configure a new {Builders::LocatorBuilder}
+    # object.
+    #
+    # @param [Builders::LocatorBuilder] locator_builder A pre-configured
+    #   {Builders::LocatorBuilder} object to use
+    # @yield [locator_builder] A LocatorBuilder object for configuring
+    #   the shipment information sent
+    def locators(locator_builder = nil)
+      if locator_builder.nil? && block_given?
+        locator_builder = UPS::Builders::LocatorBuilder.new
+        yield locator_builder
+      end
+
+      response = get_response(LOCATOR_PATH, locator_builder.to_xml)
+      UPS::Parsers::LocatorsParser.new(response.body)
     end
 
     # Makes a request to fetch Rates for a shipment.

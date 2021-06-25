@@ -31,7 +31,7 @@ module UPS
       end
 
       def dimensions_unit
-        unit_of_measurement(opts[:dimensions_unit])
+        unit_of_measurement(opts[:dimensions_unit], opts[:dimensions_description])
       end
 
       def part_number

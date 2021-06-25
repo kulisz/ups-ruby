@@ -28,6 +28,8 @@ module UPS
     autoload :ShipConfirmParser,   'ups/parsers/ship_confirm_parser'
     autoload :ShipAcceptParser,    'ups/parsers/ship_accept_parser'
     autoload :TrackParser,         'ups/parsers/track_parser'
+    autoload :LocatorsParser,         'ups/parsers/locators_parser'
+    autoload :LocatorParser,          'ups/parsers/locator_parser'
   end
 
   module Builders
@@ -42,5 +44,6 @@ module UPS
     autoload :PackageBuilder,                     'ups/builders/package_builder'
     autoload :ShipperBuilder,                     'ups/builders/shipper_builder'
     autoload :TrackBuilder,                       'ups/builders/track_builder'
+    autoload :LocatorBuilder,                     'ups/builders/locator_builder'
   end
 end

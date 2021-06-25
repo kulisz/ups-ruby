@@ -41,6 +41,17 @@ module UPS
           InternationalInvoiceBuilder.new('InternationalForms', opts).to_xml
       end
 
+      def add_cod(cod_funds_code, currency_code, monetary_value)
+        shipment_service_options << Element.new('COD').tap do |cod_container|
+          cod_container << element_with_value('CODCode', '3')
+          cod_container << element_with_value('CODFundsCode', cod_funds_code)
+          cod_container << Element.new('CODAmount').tap do |cod_amount_container|
+            cod_amount_container << element_with_value('CurrencyCode', currency_code)
+            cod_amount_container << element_with_value('MonetaryValue', monetary_value)
+          end
+        end
+      end
+
       # Adds a Service section to the XML document being built
       #
       # @param [String] service_code The Service code for the choosen Shipping

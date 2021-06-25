@@ -10,7 +10,7 @@ module ShippingOptions
       postal_code: 'SA1 1DA',
       country: 'GB',
       shipper_number: ENV['UPS_ACCOUNT_NUMBER'],
-      sender_vat_number: '123456'
+      vat_number: '123456'
     }
   end
 
