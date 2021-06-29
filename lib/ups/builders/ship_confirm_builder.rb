@@ -41,6 +41,10 @@ module UPS
           InternationalInvoiceBuilder.new('InternationalForms', opts).to_xml
       end
 
+      def add_deliver_to_addressee_only_indicator
+        shipment_service_options << element_with_value('DeliverToAddresseeOnlyIndicator', 'true')
+      end
+
       def add_cod(cod_funds_code, currency_code, monetary_value)
         shipment_service_options << Element.new('COD').tap do |cod_container|
           cod_container << element_with_value('CODCode', '3')

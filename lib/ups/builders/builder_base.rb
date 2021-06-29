@@ -170,6 +170,12 @@ module UPS
         end
       end
 
+      def add_shipment_indication_type(code)
+        shipment_root << Element.new('ShipmentIndicationType').tap do |sit|
+          sit << element_with_value('Code', code)
+        end
+      end
+
       # Adds a RateInformation/NegotiatedRatesIndicator section to the XML
       # document being built
       #
@@ -224,7 +230,7 @@ module UPS
         end
       end
 
-      def add_unit_of_measurement(unit, description)
+      def add_unit_of_measurement(unit, description = nil)
         root << unit_of_measurement(unit, description)
       end
 
