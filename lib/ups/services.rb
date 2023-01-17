@@ -16,6 +16,7 @@ module UPS
     '83' => 'UPS Today Dedicated Courier',
     '84' => 'UPS Today Intercity',
     '85' => 'UPS Today Express',
-    '86' => 'UPS Today Express Saver'
+    '86' => 'UPS Today Express Saver',
+    '70' => 'UPS Access Point Economy'
   }
 end

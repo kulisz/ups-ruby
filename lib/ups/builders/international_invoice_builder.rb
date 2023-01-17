@@ -38,6 +38,10 @@ module UPS
         element_with_value('DeclarationStatement', opts[:declaration_statement])
       end    
 
+      def comments
+        element_with_value('Comments', opts[:comments])
+      end    
+
       def reason_for_export
         element_with_value('ReasonForExport', opts[:reason_for_export])
       end
@@ -52,6 +56,10 @@ module UPS
 
       def discount
         multi_valued('Discount', MonetaryValue: opts[:discount])
+      end
+
+      def purchase_order_number
+        multi_valued('PurchaseOrderNumber', MonetaryValue: opts[:purchase_order_number])
       end
 
       def product_details
@@ -78,6 +86,8 @@ module UPS
           international_form << currency_code
           international_form << freight_charge
           international_form << discount
+          international_form << purchase_order_number if opts[:purchase_order_number]
+          international_form << comments if opts[:comments]
 
           product_details.each do |product_detail|
             international_form << product_detail

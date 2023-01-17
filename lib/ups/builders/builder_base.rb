@@ -170,6 +170,12 @@ module UPS
         end
       end
 
+      def add_shipment_indication_type(code)
+        shipment_root << Element.new('ShipmentIndicationType').tap do |sit|
+          sit << element_with_value('Code', code)
+        end
+      end
+
       # Adds a RateInformation/NegotiatedRatesIndicator section to the XML
       # document being built
       #
@@ -212,6 +218,38 @@ module UPS
         shipment_root << element_with_value('MasterCartonID', master_carton_id)
       end
 
+      # Adds OriginAddress to the locator
+      #
+      # @return [void]
+      def add_origin_address(opts = {})
+        root << Element.new('OriginAddress').tap do |origin_address|
+          origin_address << Element.new('AddressKeyFormat').tap do |address_key_format|
+            address_key_format << element_with_value('CountryCode', opts[:country_code])
+            address_key_format << element_with_value('PostcodePrimaryLow', opts[:zip_code])
+          end
+        end
+      end
+
+      def add_unit_of_measurement(unit, description = nil)
+        root << unit_of_measurement(unit, description)
+      end
+
+      def add_translate(code)
+        root << translate(code)
+      end
+
+      def location_search_criteria
+        root << Element.new('LocationSearchCriteria').tap do |lsc|
+          lsc << Element.new('SearchOption').tap do |so|
+            so << element_with_value('OptionType', '01')
+            so << element_with_value('OptionCode', '002')
+          end
+
+          lsc << element_with_value('MaximumListSize', '1')
+          lsc << element_with_value('SearchRadius', '50')
+        end
+      end
+
       # Returns a String representation of the XML document being built
       #
       # @return [String]
@@ -245,9 +283,16 @@ module UPS
         end
       end
 
-      def unit_of_measurement(unit)
+      def unit_of_measurement(unit, description = nil)
         Element.new('UnitOfMeasurement').tap do |org|
           org << element_with_value('Code', unit.to_s)
+          org << element_with_value('Description', description.to_s) if description
+        end
+      end
+
+      def translate(code)
+        Element.new('Translate').tap do |el|
+          el << element_with_value('Locale', code.to_s)
         end
       end
 

@@ -70,11 +70,11 @@ module UPS
         element_with_value('AttentionName', opts[:attention_name] || '')
       end
 
-      # Returns an XML representation of sender_vat_number
+      # Returns an XML representation of tax_identification_number
       #
-      # @return [Ox::Element] XML representation of sender_vat_number
+      # @return [Ox::Element] XML representation of tax_identification_number
       def tax_identification_number
-        element_with_value('TaxIdentificationNumber', opts[:sender_vat_number] || '')
+        element_with_value('TaxIdentificationNumber', opts[:tax_identification_number] || '')
       end
 
       # Returns an XML representation of the current object

@@ -51,11 +51,11 @@ module UPS
         element_with_value('AttentionName', opts[:attention_name][0..34])
       end
 
-      # Returns an XML representation of sender_vat_number of the company
+      # Returns an XML representation of tax_identification_number of the company
       #
-      # @return [Ox::Element] XML representation of sender_vat_number
+      # @return [Ox::Element] XML representation of tax_identification_number
       def tax_identification_number
-        element_with_value('TaxIdentificationNumber', opts[:sender_vat_number] || '')
+        element_with_value('TaxIdentificationNumber', opts[:tax_identification_number] || '')
       end
 
       # Returns an XML representation of the email address of the company
@@ -86,6 +86,17 @@ module UPS
         end
       end
 
+      # Returns an XML representation of option value
+      #
+      # @return [Ox::Element] XML representation of the option
+      def option
+        element_with_value('Option', opts[:option])
+      end
+
+      def location_id
+        element_with_value('LocationID', opts[:location_id])
+      end
+
       # Returns an XML representation of a UPS Organization
       #
       # @return [Ox::Element] XML representation of the current object
@@ -98,6 +109,8 @@ module UPS
           org << tax_identification_number
           org << email_address
           org << vendor_info unless opts[:sender_ioss_number].to_s.empty?
+          org << option if opts[:option]
+          org << location_id if opts[:location_id]
         end
       end
     end
