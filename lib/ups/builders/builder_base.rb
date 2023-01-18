@@ -34,6 +34,11 @@ module UPS
         initialize_xml_roots root_name
 
         document << access_request
+
+        instruct = Ox::Instruct.new(:xml)
+        instruct[:version] = '1.0'
+        document << instruct
+
         document << root
 
         yield self if block_given?
@@ -218,36 +223,12 @@ module UPS
         shipment_root << element_with_value('MasterCartonID', master_carton_id)
       end
 
-      # Adds OriginAddress to the locator
-      #
-      # @return [void]
-      def add_origin_address(opts = {})
-        root << Element.new('OriginAddress').tap do |origin_address|
-          origin_address << Element.new('AddressKeyFormat').tap do |address_key_format|
-            address_key_format << element_with_value('CountryCode', opts[:country_code])
-            address_key_format << element_with_value('PostcodePrimaryLow', opts[:zip_code])
-          end
-        end
-      end
-
       def add_unit_of_measurement(unit, description = nil)
         root << unit_of_measurement(unit, description)
       end
 
       def add_translate(code)
         root << translate(code)
-      end
-
-      def location_search_criteria
-        root << Element.new('LocationSearchCriteria').tap do |lsc|
-          lsc << Element.new('SearchOption').tap do |so|
-            so << element_with_value('OptionType', '01')
-            so << element_with_value('OptionCode', '002')
-          end
-
-          lsc << element_with_value('MaximumListSize', '1')
-          lsc << element_with_value('SearchRadius', '50')
-        end
       end
 
       # Returns a String representation of the XML document being built
@@ -264,6 +245,11 @@ module UPS
         self.root = Element.new(root_name)
         self.shipment_root = Element.new('Shipment')
         self.access_request = Element.new('AccessRequest')
+        
+        instruct = Ox::Instruct.new(:xml)
+        instruct[:version] = '1.0'
+        document << instruct
+
         root << shipment_root
       end
 
